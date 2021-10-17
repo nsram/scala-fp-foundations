@@ -11,13 +11,13 @@ object ValueFunctionExercises {
   // but     selectDigits("welcome") == ""
   // Note: You can use `filter` method from `String`, also check out the API of `Char`
   def selectDigits(text: String): String =
-    ???
+    text.filter("0123456789".contains(_)) // text.filter(_.isDigit) for single variable placeholder idiomatic
 
   // 1b. Implement `secret` which transforms all characters in a String to '*'
   // such as secret("Welcome123") == "**********"
   // Note: Try to use a higher-order function from the String API
   def secret(text: String): String =
-    ???
+    text.map(_ => '*') // need the placeholder and => else it is not a fnction
 
   // 1c. Implement `isValidUsernameCharacter` which checks if a character is suitable for a username.
   // We accept:
@@ -29,14 +29,14 @@ object ValueFunctionExercises {
   // but          isValidUsernameCharacter('^') == false
   // Note: You might find some useful helper methods on `char`.
   def isValidUsernameCharacter(char: Char): Boolean =
-    ???
+    char.isLetter || char.isDigit || char == '_' || char == '-' // char.isLetterOrDigit is alternative
 
   // 1d. Implement `isValidUsername` which checks that all the characters in a String are valid
   // such as isValidUsername("john-doe") == true
   // but     isValidUsername("*john*") == false
   // Note: Try to use `isValidUsernameCharacter` and a higher-order function from the String API.
   def isValidUsername(username: String): Boolean =
-    ???
+    username.forall(isValidUsername(_)) // eta expansion from def to val, drop the (_) entirely to make it simpler
 
   ///////////////////////
   // Exercise 2: Point
