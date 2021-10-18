@@ -45,8 +45,32 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
       assert(once == twice)
     }
   }
+
+  test("isValidUsername") { // also can change case deleting some chars etc.
+    forAll { (username: String) =>
+      assert(isValidUsername(username.reverse) == isValidUsername(username))
+    }
+  }
   ///////////////////////
   // Exercise 2: Point
   ///////////////////////
+
+  test("Point isPositive") { // x.abs will fail property testing due to Int.MinValue
+    forAll { (x: Int, y: Int, z: Int) =>
+      assert(Point(x.max(0), y.max(0), z.max(0)).isPositive)
+    }
+  }
+
+  test("Point isEven") { //
+    forAll { (x: Int, y: Int, z: Int) =>
+      assert(Point(x, y, z).isEven == Point(x + 2, y + 2, z + 2).isEven)
+    }
+  }
+
+  test("Point forAll") { //
+    forAll { (x: Int, y: Int, z: Int, predicate: Int => Boolean) =>
+      Point(x, y, z).forAll(predicate) == List(x, y, z).forall(predicate) // using collection forall
+    }
+  }
 
 }
