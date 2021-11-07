@@ -30,6 +30,17 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
     }
   }
 
+  test("selectDigits creates a String with digits only, Sriram1") {
+    forAll { (text: String) =>
+      assert(selectDigits(text).forall(_.isDigit))
+    }
+  }
+
+  test("selectDigits creates a String that has characters from the original, Sriram1") {
+    forAll { (text: String) =>
+      assert(selectDigits(text).forall(text.contains(_))) // we could use foreach like previously and put assert inside
+    }
+  }
   // replace `ignore` by `test` to enable the test
   test("secret content all are *") {
     forAll { (text: String) =>
@@ -46,9 +57,27 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
     }
   }
 
+  test("secret converts everything in input to asterisk, Sriram2") {
+    assert(secret("Welcome123") == "**********")
+  }
+
+  test("secret takes an arbitrary string whose result should be * times the size, Sriram2") {
+    forAll { (text: String) =>
+      assert(secret(text) == "*" * text.length)
+    }
+  }
+
   test("isValidUsername") { // also can change case deleting some chars etc.
     forAll { (username: String) =>
       assert(isValidUsername(username.reverse) == isValidUsername(username))
+    }
+  }
+
+  test("isValidUsername property checks, Sriram3") {
+    forAll { (username: String) =>
+      assert(isValidUsername(username) == isValidUsername(username.reverse))
+      assert(isValidUsername(username) == isValidUsername(username.map(_.toUpper)))
+      assert(isValidUsername(username) == isValidUsername(username.map(_.toLower)))
     }
   }
   ///////////////////////
@@ -58,6 +87,20 @@ class ValueFunctionExercisesTest extends AnyFunSuite with ScalaCheckDrivenProper
   test("Point isPositive") { // x.abs will fail property testing due to Int.MinValue
     forAll { (x: Int, y: Int, z: Int) =>
       assert(Point(x.max(0), y.max(0), z.max(0)).isPositive)
+    }
+  }
+
+  test("isPositive Point max checks, Sriram4") {
+    forAll { (x: Int, y: Int, z: Int) =>
+      assert(Point(x.max(0), y.max(0), z.max(0)).isPositive) // Isn't this obvious though?
+    }
+  }
+
+  // This flopped due to overflow and underflow
+  test("isPositive Point property check by translation of positive points and negative points, Sriram4") {
+    forAll { (x: Int, y: Int, z: Int) =>
+      //  assert((Point(x, y, z).isPositive && Point(x + 1, y + 1, z + 1).isPositive) || !Point(x, y, z).isPositive)
+      //assert((!Point(x, y, z).isPositive && !Point(x - 1, y - 1, z - 1).isPositive) || Point(x, y, z).isPositive)
     }
   }
 
